@@ -1,12 +1,12 @@
 import React from 'react';
-// import RPS from './RPS';
-import { Container, Button } from 'semantic-ui-react';
+import { Container, Button, Segment, Grid, Divider, Header, Icon } from 'semantic-ui-react';
 
 class App extends React.Component {
   state = { 
-    player: {choice: null, wins: 0},
-    opponent: {choice: null, wins: 0},
-    winner: false,
+    player: {choice: "", },
+    opponent: {choice: "",},
+    stats: {wins: 0, losses: 0, ties: 0,},
+    result: '',
     choices: [
       "Rock",
       "Paper",
@@ -14,9 +14,31 @@ class App extends React.Component {
     ],
   };
 
+  figureResult = () => {
+    const {player, opponent, stats} = this.state
+    let newResult = ''
+
+    if(player.choice === opponent.choice) {
+      newResult = "Tie!"
+      stats.ties += 1
+    }
+    else if(
+      (player.choice === "Rock" && opponent.choice === "Scissors") ||
+      (player.choice === "Paper" && opponent.choice === "Rock") ||
+      (player.choice === "Scissors" && opponent.choice === "Paper")
+    ) {
+      newResult = "Player wins!"
+      stats.wins += 1
+    }
+    else {
+      newResult = "Opponent Wins!"
+      stats.losses += 1
+    }
+    this.setState({stats, result: newResult});
+  }
+
   pickChoice = (choice) => {
-    const player = this.state.player
-    const opponent = this.state.opponent
+    const {player, opponent} = this.state
 
     switch(choice) {
       case "Rock":
@@ -46,17 +68,72 @@ class App extends React.Component {
       default:
         break;
     }
-    this.setState({player, opponent, })
+    this.setState({player, opponent, });
+    this.figureResult();
   }
 
   render() {
+    const { player, opponent, choices, result, stats} = this.state
+
     return (
-      <Container>
-        <div>
-          <Button onClick={ () => this.pickChoice(this.state.choices[0])} color="brown" icon="hand rock" />
-          <Button onClick={ () => this.pickChoice(this.state.choices[1])} color="orange" icon="hand paper" />
-          <Button onClick={ () => this.pickChoice(this.state.choices[2])} color="olive" icon="hand scissors" />
-        </div>
+      <Container style={{marginTop: "25px", }}>
+        <Button.Group widths='3'>
+          <Button onClick={ () => this.pickChoice(choices[0])} color="brown" icon="hand rock" size="massive" />
+          <Button onClick={ () => this.pickChoice(choices[1])} color="orange" icon="hand paper" size="massive" />
+          <Button onClick={ () => this.pickChoice(choices[2])} color="olive" icon="hand scissors" size="massive" />
+        </Button.Group>
+
+        <Segment inverted placeholder>
+          <Grid columns={2} stackable textAlign='center'>
+            <Divider inverted vertical>VS</Divider>
+
+            <Grid.Row verticalAlign='middle'>
+              <Grid.Column>
+                <Header inverted icon>
+                  <Icon name= {'hand ' + player.choice.toLowerCase()} />
+                  Player Choice: {player.choice}
+                </Header>
+              </Grid.Column>
+              
+              <Grid.Column>
+                <Header inverted icon>
+                  <Icon name= {'hand ' + opponent.choice.toLowerCase()} />
+                  Opponent Choice: {opponent.choice}
+                </Header>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
+
+        <Segment inverted>
+          <Header inverted textAlign='center'>
+            {result}
+          </Header>
+        </Segment>
+
+        <Segment inverted>
+          <Grid columns={3} stackable textAlign='center'>
+            <Grid.Row verticalAlign='middle'>
+              <Grid.Column>
+                <Header inverted>
+                  Wins: {stats.wins}
+                </Header>
+              </Grid.Column>
+
+              <Grid.Column>
+                <Header inverted>
+                  Losses: {stats.losses}
+                </Header>
+              </Grid.Column>
+
+              <Grid.Column>
+                <Header inverted>
+                  Ties: {stats.ties}
+                </Header>
+              </Grid.Column>
+            </Grid.Row>
+          </Grid>
+        </Segment>
       </Container>
     );
   }
