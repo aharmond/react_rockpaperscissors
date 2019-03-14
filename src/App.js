@@ -109,16 +109,16 @@ class App extends React.Component {
     else if (playerTurn === false) {
       switch(choice) {
         case "Rock":
-        opponent.choice = "Rock"
-        break;
+          opponent.choice = "Rock"
+          break;
         case "Paper":
-        opponent.choice = "Paper"
-        break;
+          opponent.choice = "Paper"
+          break;
         case "Scissors":
-        opponent.choice = "Scissors"
-        break;
+          opponent.choice = "Scissors"
+          break;
         default:
-        break;
+          break;
       }
       this.setState({ opponent, playerTurn: true, });
       this.figureResult();
@@ -141,6 +141,7 @@ class App extends React.Component {
 
     return (
       <Container style={{marginTop: "25px", }}>
+
         { toggleMode ? 
           <Button.Group widths='3'>
             <Button onClick={ () => this.pickChoice(choices[0])} color="brown" icon="hand rock" size="massive" />
@@ -154,6 +155,7 @@ class App extends React.Component {
             <Button onClick={ () => this.pickMultiplayerChoice(choices[2])} color="teal" icon="hand scissors" size="massive" />
           </Button.Group>
         }
+
         <Segment inverted placeholder>
           <Grid columns={2} stackable textAlign='center'>
             <Divider inverted vertical>VS</Divider>
@@ -161,15 +163,15 @@ class App extends React.Component {
             <Grid.Row verticalAlign='middle'>
               <Grid.Column>
                 {playerTurn ? 
-                <Header inverted icon>
-                  <Icon name= {'hand ' + player.choice.toLowerCase()} />
-                  Player Choice: {player.choice}
-                </Header>
-              :
-                <Header inverted>
-                  Waiting for opponent...
-                </Header>
-              }
+                  <Header inverted icon>
+                    <Icon name= {'hand ' + player.choice.toLowerCase()} />
+                    Player Choice: {player.choice}
+                  </Header>
+                :
+                  <Header inverted>
+                    Waiting for opponent...
+                  </Header>
+                }
               </Grid.Column>
               
               <Grid.Column>
@@ -234,14 +236,15 @@ class App extends React.Component {
 
         <Segment inverted>
           {toggleMode ? 
-          <Button onClick={this.switchMode} fluid color="green" inverted>2 Player Mode</Button>
+            <Button onClick={this.switchMode} fluid color="green" inverted>2 Player Mode</Button>
           :
-          <Button onClick={this.switchMode} fluid color="blue" inverted>1 Player Mode</Button>
+            <Button onClick={this.switchMode} fluid color="blue" inverted>1 Player Mode</Button>
           }
         </Segment>
+
       </Container>
     );
-  }
-}
+  };
+};
 
 export default App;
